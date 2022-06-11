@@ -12,7 +12,6 @@
   "ignorePatterns": ["*.config.js"],
   "rules": {
     "import/no-unresolved": "off",
-    "import/extensions": [".ts"],
     "import/order": [
       "error",
       {
