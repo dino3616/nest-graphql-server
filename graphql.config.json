@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "nest-graphql-server": {
+      "schema": ["./schema.gql"]
+    }
+  }
+}
