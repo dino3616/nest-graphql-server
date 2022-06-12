@@ -1,10 +1,9 @@
 import { plainToClass } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsString, validateSync } from 'class-validator';
+import { IsNotEmpty, IsString, validateSync } from 'class-validator';
 
 class EnvValidator {
   NODE_ENV: 'development' | 'production' | 'test';
 
-  @IsNumber()
   PORT = 3000;
 
   @IsNotEmpty()
