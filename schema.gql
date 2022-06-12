@@ -8,5 +8,6 @@ type PostModel {
 }
 
 type Query {
+  envTest: String!
   posts: [PostModel!]
 }
