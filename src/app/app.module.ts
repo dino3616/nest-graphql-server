@@ -8,6 +8,8 @@ import PostsModule from '../components/post/post.module';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      path: '/graphql',
+      introspection: true,
       autoSchemaFile: join(process.cwd(), './schema.gql'),
       sortSchema: true,
     }),
