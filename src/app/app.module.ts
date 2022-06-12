@@ -11,10 +11,6 @@ import Env from '../config/environment/getter/getter.service';
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       inject: [Env],
-      // path: '/graphql',
-      // introspection: true,
-      // autoSchemaFile: join(process.cwd(), './schema.gql'),
-      // sortSchema: true,
       useFactory: (env: Env) => env.GqlModuleOptionsFactory,
     }),
     PostsModule,

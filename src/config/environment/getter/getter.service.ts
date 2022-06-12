@@ -21,13 +21,13 @@ export default class Env {
 
   get GqlModuleOptionsFactory(): GqlModuleOptions {
     const devOptions: GqlModuleOptions = {
-      path: "/graphql",
+      path: '/graphql',
       autoSchemaFile: join(process.cwd(), './schema.gql'),
       sortSchema: true,
     };
 
     const prdOptions: GqlModuleOptions = {
-      path: "/graphql",
+      path: '/graphql',
       autoSchemaFile: true,
     };
 
