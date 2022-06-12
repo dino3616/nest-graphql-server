@@ -1,17 +1,21 @@
-import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import PostsModule from '../components/post/post.module';
+import EnvModule from '../config/environment/getter/getter.module';
+import Env from '../config/environment/getter/getter.service';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    EnvModule,
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      path: '/graphql',
-      introspection: true,
-      autoSchemaFile: join(process.cwd(), './schema.gql'),
-      sortSchema: true,
+      inject: [Env],
+      // path: '/graphql',
+      // introspection: true,
+      // autoSchemaFile: join(process.cwd(), './schema.gql'),
+      // sortSchema: true,
+      useFactory: (env: Env) => env.GqlModuleOptionsFactory,
     }),
     PostsModule,
   ],
