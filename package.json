@@ -9,7 +9,7 @@
     "gen:controller": "nest generate controller",
     "gen:service": "nest generate service",
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "prisma generate --schema ./src/libs/prisma/schema.prisma && nest build",
     "dev": "nest start --watch",
     "debug": "nest start --debug --watch",
     "start": "nest start",
