@@ -11,7 +11,15 @@
   },
   "ignorePatterns": ["*.config.js"],
   "rules": {
-    "import/no-unresolved": "off",
+    "no-useless-constructor": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
     "import/order": [
       "error",
       {
@@ -20,5 +28,12 @@
         }
       }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts"]
+      }
+    }
   }
 }
