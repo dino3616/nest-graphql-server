@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import PostResolver from './post.resolvers';
+import PostService from './post.service';
+import PostMutation from './resolvers/mutation';
+import PostQuery from './resolvers/query';
 
 @Module({
-  providers: [PostResolver],
+  providers: [PostQuery, PostMutation, PostService],
 })
-export default class PostsModule {}
+export default class PostModule {}
