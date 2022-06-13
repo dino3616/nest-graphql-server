@@ -1,49 +1,66 @@
 import { Injectable } from '@nestjs/common';
-import { Post, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import PrismaService from '../../libs/prisma/prisma.service';
 
 @Injectable()
 export default class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async findUnique(id: string): Promise<Post | null> {
+  async findPost(args: { where: Prisma.UserWhereUniqueInput }) {
+    const { where } = args;
+
     return this.prisma.post.findUnique({
-      where: { id },
+      where,
+      include: { user: { include: { posts: true } } },
     });
   }
 
-  async findMany(
-    where?: Prisma.PostWhereInput,
-    skip?: number,
-    take?: number,
-    cursor?: Prisma.PostWhereUniqueInput,
-    orderBy?: Prisma.PostOrderByWithAggregationInput,
-  ): Promise<Post[]> {
+  async findPosts(args?: {
+    where?: Prisma.PostWhereInput;
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.PostWhereUniqueInput;
+    orderBy?: Prisma.PostOrderByWithAggregationInput[];
+    distinct?: Prisma.PostScalarFieldEnum[];
+  }) {
+    const { where, skip, take, cursor, orderBy, distinct } = args || {};
+
     return this.prisma.post.findMany({
       where,
       skip,
       take,
       cursor,
       orderBy,
+      distinct,
+      include: { user: { include: { posts: true } } },
     });
   }
 
-  async create(data: Prisma.PostCreateInput): Promise<Post> {
+  async create(args: { data: Prisma.PostCreateInput }) {
+    const { data } = args;
+
     return this.prisma.post.create({
       data,
+      include: { user: { include: { posts: true } } },
     });
   }
 
-  async update(id: string, data: Prisma.PostUpdateInput): Promise<Post> {
+  async update(args: { where: Prisma.PostWhereUniqueInput; data: Prisma.PostUpdateInput }) {
+    const { where, data } = args;
+
     return this.prisma.post.update({
-      where: { id },
+      where,
       data,
+      include: { user: { include: { posts: true } } },
     });
   }
 
-  async delete(id: string): Promise<Post> {
+  async delete(args: { where: Prisma.PostWhereUniqueInput }) {
+    const { where } = args;
+
     return this.prisma.post.delete({
-      where: { id },
+      where,
+      include: { user: { include: { posts: true } } },
     });
   }
 }

@@ -8,21 +8,40 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
-  createPost(content: String!, title: String!): PostModel!
-  deletePost(id: String!): PostModel!
-  updatePost(content: String, id: String!, title: String): PostModel!
+  createPost: Post!
+  createUser: User!
+  deletePost: Post!
+  deleteUser: User!
+  updatePost: Post!
+  updateUser: User!
 }
 
-type PostModel {
+type Post {
   content: String!
   createdAt: DateTime!
-  id: String!
+  id: ID!
   title: String!
   updatedAt: DateTime!
+  user: User!
+  userId: String!
 }
 
 type Query {
-  findPostById(id: String!): PostModel
-  findPosts(content: String, createdAt: DateTime, id: String, title: String, updatedAt: DateTime): [PostModel!]!
-  getAllPosts: [PostModel!]!
+  findPostById: Post
+  findPosts: [Post!]!
+  findUserById: User
+  findUsers: [User!]!
+  getAllPosts: [Post!]!
+  getAllUsers: [User!]!
+}
+
+type User {
+  _count: UserCount!
+  id: ID!
+  name: String!
+  posts: [Post!]
+}
+
+type UserCount {
+  posts: Int!
 }
