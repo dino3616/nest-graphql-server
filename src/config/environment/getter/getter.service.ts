@@ -11,12 +11,22 @@ export default class Env {
     return this.configService.get('NODE_ENV') === 'production';
   }
 
-  get Port(): number {
-    return this.configService.get('PORT');
+  get Port(): number | Error {
+    const port = this.configService.get('PORT');
+    if (!port) {
+      return new Error('PORT environment variable must be specified.');
+    }
+
+    return port;
   }
 
-  get DatabaseURL(): string {
-    return this.configService.get('DATABASE_URL');
+  get DatabaseURL(): string | Error {
+    const databaseURL = this.configService.get('DATABASE_URL');
+    if (!databaseURL) {
+      return new Error('DATABASE_URL environment variable must be specified.');
+    }
+
+    return databaseURL;
   }
 
   get GqlModuleOptionsFactory(): GqlModuleOptions {
