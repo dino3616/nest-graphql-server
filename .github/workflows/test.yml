@@ -5,6 +5,21 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test?schema=public
+    services:
+      db:
+        image: postgres
+        env:
+          POSTGRES_DB: test
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
       - name: Checkout
@@ -13,8 +28,17 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Migrate
+        run: yarn prisma:migrate
+
       - name: Lint
         run: yarn lint --max-warnings=0
 
       - name: Build
         run: yarn run build
+
+      - name: Unit Test
+        run: yarn test
+
+      - name: E2E Test
+        run: yarn test:e2e
