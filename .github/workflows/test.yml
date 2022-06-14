@@ -31,12 +31,6 @@ jobs:
       - name: Migrate
         run: yarn prisma:migrate
 
-      - name: Lint
-        run: yarn lint --max-warnings=0
-
-      - name: Build
-        run: yarn run build
-
       - name: Unit Test
         run: yarn test
 
