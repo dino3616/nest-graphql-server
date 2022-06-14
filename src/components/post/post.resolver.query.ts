@@ -9,7 +9,7 @@ export default class PostQuery {
   constructor(private service: PostService) {}
 
   @Query(() => Post, { nullable: true })
-  async findPostById(args: FindUniquePostArgs): Promise<Post> {
+  async findPostById(args: FindUniquePostArgs): Promise<Post | null> {
     const post = await this.service.findPost(args);
 
     return post;

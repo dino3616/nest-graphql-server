@@ -9,7 +9,7 @@ export default class UserQuery {
   constructor(private service: UserService) {}
 
   @Query(() => User, { nullable: true })
-  async findUserById(args: FindUniqueUserArgs): Promise<User> {
+  async findUserById(args: FindUniqueUserArgs): Promise<User | null> {
     const user = await this.service.findUser(args);
 
     return user;
