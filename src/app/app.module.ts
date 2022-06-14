@@ -1,18 +1,23 @@
+import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import Components from '../components';
 import EnvModule from '../config/environment/getter/getter.module';
-import Env from '../config/environment/getter/getter.service';
 import PrismaModule from '../libs/prisma/prisma.module';
 
 @Module({
   imports: [
     EnvModule,
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      inject: [Env],
-      useFactory: (env: Env) => env.GqlModuleOptionsFactory,
+      path: '/graphql',
+      introspection: true,
+      autoSchemaFile: join(process.cwd(), './schema.gql'),
+      sortSchema: true,
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     PrismaModule,
     ...Components,
