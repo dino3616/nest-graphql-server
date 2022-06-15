@@ -1,46 +1,60 @@
-import { join } from 'path';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GqlModuleOptions } from '@nestjs/graphql';
+import { ApolloConfigInput } from 'apollo-server-types';
 
 @Injectable()
 export default class Env {
   constructor(private configService: ConfigService) {}
 
-  isProduction(): boolean {
-    return this.configService.get('NODE_ENV') === 'production';
+  get NodeEnv(): string {
+    let nodeEnv = this.configService.get('NODE_ENV');
+    if (!nodeEnv) {
+      nodeEnv = 'production';
+    }
+
+    return nodeEnv;
   }
 
-  get Port(): number | Error {
+  get Port(): number {
     const port = this.configService.get('PORT');
     if (!port) {
-      return new Error('PORT environment variable must be specified.');
+      throw new Error('PORT environment variable must be specified.');
     }
 
     return port;
   }
 
-  get DatabaseURL(): string | Error {
+  get DatabaseURL(): string {
     const databaseURL = this.configService.get('DATABASE_URL');
     if (!databaseURL) {
-      return new Error('DATABASE_URL environment variable must be specified.');
+      throw new Error('DATABASE_URL environment variable must be specified.');
     }
 
     return databaseURL;
   }
 
-  get GqlModuleOptionsFactory(): GqlModuleOptions {
-    const devOptions: GqlModuleOptions = {
-      path: '/graphql',
-      autoSchemaFile: join(process.cwd(), './schema.gql'),
-      sortSchema: true,
-    };
+  get ApolloKey(): string {
+    const apolloKey = this.configService.get('APOLLO_KEY');
+    if (!apolloKey) {
+      throw new Error('APOLLO_KEY environment variable must be specified.');
+    }
 
-    const prdOptions: GqlModuleOptions = {
-      path: '/graphql',
-      autoSchemaFile: true,
-    };
+    return apolloKey;
+  }
 
-    return this.isProduction() ? prdOptions : devOptions;
+  get ApolloGraphId(): string {
+    const apolloGraphId = this.configService.get('APOLLO_GRAPH_ID');
+    if (!apolloGraphId) {
+      throw new Error('APOLLO_GRAPH_ID environment variable must be specified.');
+    }
+
+    return apolloGraphId;
+  }
+
+  get ApolloStudioConfig(): ApolloConfigInput {
+    return {
+      key: this.ApolloKey,
+      graphId: this.ApolloGraphId,
+    };
   }
 }
