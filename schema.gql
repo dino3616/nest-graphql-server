@@ -2,46 +2,346 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+type UserCount {
+  posts: Int!
+}
 
-type Mutation {
-  createPost: Post!
-  createUser: User!
-  deletePost: Post!
-  deleteUser: User!
-  updatePost: Post!
-  updateUser: User!
+type User {
+  id: ID!
+  name: String!
+  posts: [Post!]
+  _count: UserCount!
 }
 
 type Post {
-  content: String!
-  createdAt: DateTime!
   id: ID!
   title: String!
+  content: String!
+  createdAt: DateTime!
   updatedAt: DateTime!
   user: User!
   userId: String!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
-  findPostById: Post
-  findPosts: [Post!]!
-  findUserById: User
-  findUsers: [User!]!
-  getAllPosts: [Post!]!
+  getAuthorizationHeader: String!
+  findUserById(where: UserWhereUniqueInput!): User
+  findUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   getAllUsers: [User!]!
+  findPostById(where: PostWhereUniqueInput!): Post
+  findPosts(where: PostWhereInput, orderBy: [PostOrderByWithRelationInput!], cursor: PostWhereUniqueInput, take: Int, skip: Int, distinct: [PostScalarFieldEnum!]): [Post!]!
+  getAllPosts: [Post!]!
 }
 
-type User {
-  _count: UserCount!
-  id: ID!
+input UserWhereUniqueInput {
+  id: String
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  posts: PostListRelationFilter
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
+}
+
+input PostListRelationFilter {
+  every: PostWhereInput
+  some: PostWhereInput
+  none: PostWhereInput
+}
+
+input PostWhereInput {
+  AND: [PostWhereInput!]
+  OR: [PostWhereInput!]
+  NOT: [PostWhereInput!]
+  id: StringFilter
+  title: StringFilter
+  content: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  userId: StringFilter
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input UserOrderByWithRelationInput {
+  id: SortOrder
+  name: SortOrder
+  posts: PostOrderByRelationAggregateInput
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input PostOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+enum UserScalarFieldEnum {
+  id
+  name
+}
+
+input PostWhereUniqueInput {
+  id: String
+}
+
+input PostOrderByWithRelationInput {
+  id: SortOrder
+  title: SortOrder
+  content: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum PostScalarFieldEnum {
+  id
+  title
+  content
+  createdAt
+  updatedAt
+  userId
+}
+
+type Mutation {
+  createUser(data: UserCreateInput!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User!
+  createPost(data: PostCreateInput!): Post!
+  updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post!
+  deletePost(where: PostWhereUniqueInput!): Post!
+}
+
+input UserCreateInput {
+  id: String
   name: String!
-  posts: [Post!]
+  posts: PostCreateNestedManyWithoutUserInput
 }
 
-type UserCount {
-  posts: Int!
+input PostCreateNestedManyWithoutUserInput {
+  create: [PostCreateWithoutUserInput!]
+  connectOrCreate: [PostCreateOrConnectWithoutUserInput!]
+  createMany: PostCreateManyUserInputEnvelope
+  connect: [PostWhereUniqueInput!]
+}
+
+input PostCreateWithoutUserInput {
+  id: String
+  title: String!
+  content: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input PostCreateOrConnectWithoutUserInput {
+  where: PostWhereUniqueInput!
+  create: PostCreateWithoutUserInput!
+}
+
+input PostCreateManyUserInputEnvelope {
+  data: [PostCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input PostCreateManyUserInput {
+  id: String
+  title: String!
+  content: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input UserUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutUserInput
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
+input PostUpdateManyWithoutUserInput {
+  create: [PostCreateWithoutUserInput!]
+  connectOrCreate: [PostCreateOrConnectWithoutUserInput!]
+  upsert: [PostUpsertWithWhereUniqueWithoutUserInput!]
+  createMany: PostCreateManyUserInputEnvelope
+  set: [PostWhereUniqueInput!]
+  disconnect: [PostWhereUniqueInput!]
+  delete: [PostWhereUniqueInput!]
+  connect: [PostWhereUniqueInput!]
+  update: [PostUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [PostUpdateManyWithWhereWithoutUserInput!]
+  deleteMany: [PostScalarWhereInput!]
+}
+
+input PostUpsertWithWhereUniqueWithoutUserInput {
+  where: PostWhereUniqueInput!
+  update: PostUpdateWithoutUserInput!
+  create: PostCreateWithoutUserInput!
+}
+
+input PostUpdateWithoutUserInput {
+  id: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  content: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input PostUpdateWithWhereUniqueWithoutUserInput {
+  where: PostWhereUniqueInput!
+  data: PostUpdateWithoutUserInput!
+}
+
+input PostUpdateManyWithWhereWithoutUserInput {
+  where: PostScalarWhereInput!
+  data: PostUpdateManyMutationInput!
+}
+
+input PostScalarWhereInput {
+  AND: [PostScalarWhereInput!]
+  OR: [PostScalarWhereInput!]
+  NOT: [PostScalarWhereInput!]
+  id: StringFilter
+  title: StringFilter
+  content: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input PostUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  content: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input PostCreateInput {
+  id: String
+  title: String!
+  content: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  user: UserCreateNestedOneWithoutPostsInput!
+}
+
+input UserCreateNestedOneWithoutPostsInput {
+  create: UserCreateWithoutPostsInput
+  connectOrCreate: UserCreateOrConnectWithoutPostsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutPostsInput {
+  id: String
+  name: String!
+}
+
+input UserCreateOrConnectWithoutPostsInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutPostsInput!
+}
+
+input PostUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  content: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutPostsInput
+}
+
+input UserUpdateOneRequiredWithoutPostsInput {
+  create: UserCreateWithoutPostsInput
+  connectOrCreate: UserCreateOrConnectWithoutPostsInput
+  upsert: UserUpsertWithoutPostsInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutPostsInput
+}
+
+input UserUpsertWithoutPostsInput {
+  update: UserUpdateWithoutPostsInput!
+  create: UserCreateWithoutPostsInput!
+}
+
+input UserUpdateWithoutPostsInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
 }
