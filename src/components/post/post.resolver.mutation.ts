@@ -1,4 +1,4 @@
-import { Resolver, Mutation } from '@nestjs/graphql';
+import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { CreateOnePostArgs } from '../../libs/prisma/generated/post/create-one-post/args';
 import { DeleteOnePostArgs } from '../../libs/prisma/generated/post/delete-one-post/args';
 import { Post } from '../../libs/prisma/generated/post/post/model';
@@ -10,21 +10,21 @@ export default class PostMutation {
   constructor(private service: PostService) {}
 
   @Mutation(() => Post)
-  async createPost(args: CreateOnePostArgs) {
+  async createPost(@Args() args: CreateOnePostArgs) {
     const post = this.service.create(args);
 
     return post;
   }
 
   @Mutation(() => Post)
-  async updatePost(args: UpdateOnePostArgs) {
+  async updatePost(@Args() args: UpdateOnePostArgs) {
     const post = this.service.update(args);
 
     return post;
   }
 
   @Mutation(() => Post)
-  async deletePost(args: DeleteOnePostArgs) {
+  async deletePost(@Args() args: DeleteOnePostArgs) {
     const post = this.service.delete(args);
 
     return post;
