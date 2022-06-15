@@ -9,6 +9,10 @@ class EnvValidator {
   @IsNotEmpty()
   @IsString()
   DATABASE_URL: string;
+
+  APOLLO_KEY: string;
+
+  APOLLO_GRAPH_ID: string;
 }
 
 const validate = (config: Record<string, unknown>) => {
